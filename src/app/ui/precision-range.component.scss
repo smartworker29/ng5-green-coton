@@ -1,0 +1,49 @@
+.wrapper {
+  position: relative;
+  z-index: 0;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  margin: 0 20px;
+  padding: 3px 0;
+  text-align: center;
+}
+
+button {
+  position: absolute;
+  z-index: 50;
+  height: 27px;
+  width: 27px;
+  background: #214963;
+  border-radius: 50%;
+  border-color: #00AEEF;
+  border-style: solid;
+  outline: none;
+  cursor: pointer;
+  color: white;
+  line-height: 21px;
+  padding: 2px 2px;
+  &.decrease {
+    left: -16px;
+    @media(max-width:500px){ left: -22px;}
+  }
+  &.increase {
+    right: -16px;
+    @media(max-width:500px){ right: -22px;}
+  }
+}
+
+.value-container {
+  display: table;
+  margin: 0 auto;
+}
+
+input {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+.uom {
+  position: relative;
+  left: -0.75em;
+}

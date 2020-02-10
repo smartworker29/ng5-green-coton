@@ -1,0 +1,33 @@
+/* styles needed to override styles from hosting page */
+/* these should target selectors only found in the hosting page, not in our app */
+@import '_variables';
+
+header.header-designer {
+  overflow-y: hidden;
+  height: 39px;
+  background: none;
+  border-bottom: none;
+}
+
+.header-designer img {
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  span { width: auto; }
+}
+.btn::after {
+  top: unset;
+  left: unset;
+  content: '';
+  background: unset;
+  width: unset;
+  height: unset;
+  position: inherit;
+}
+
+footer {
+  display: none;
+}

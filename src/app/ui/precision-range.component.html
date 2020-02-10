@@ -1,0 +1,18 @@
+<div class="wrapper">
+  <button class="decrease" (click)="decrease($event)"><i class="fa fa-minus"></i></button>
+  <button class="increase" (click)="increase($event)"><i class="fa fa-plus"></i></button>
+  <div class="value-container">
+    <span *ngIf="label">{{label}}: </span>
+    <input type="text"
+      [value]="displayValue"
+      [size]="size"
+      (keypress.arrowup)="increase($event)"
+      (keypress.arrowdown)="decrease($event)"
+      (keypress.enter)="updateValue($event.target.value)"
+      (keypress.blur)="updateValue($event.target.value)"
+      (focus)="selectAll($event)"
+      (change)="updateValue($event.target.value)"
+      />
+    <span *ngIf="uom" class="uom">{{uom}}</span>
+  </div>
+</div>

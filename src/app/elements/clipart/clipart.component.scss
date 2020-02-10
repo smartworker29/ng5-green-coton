@@ -1,0 +1,10 @@
+/deep/ .transparent-selected .current-color {
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACN\
+    Ms+9AAAAGElEQVQYlWNgYGCQwoKxgqGgcJA5h3yFAAs8BRWVSwooAAAAAElFTkSuQmCC') !important;
+}
+
+.modal-body .row>.col, .modal-body .row>[class^=col-] {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+}
+

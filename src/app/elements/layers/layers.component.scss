@@ -1,0 +1,30 @@
+.toolbar-item {
+  display: none;
+  @media (max-width: 600px) {
+    display: block;
+  }
+}
+
+.layers-table {
+  width: 100%;
+  ::ng-deep .img-fluid{ max-width: 70%; }
+  tr {
+    border-bottom: 1px solid #ddd;
+    &:last-child {
+      border: none;
+    }
+  }
+  td {
+    padding: 8px 5px;
+    &:first-child {
+      @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) { /* IE10+ CSS styles */
+        display: inline-block;
+      }
+      padding-left: 0;
+      width: 50px;
+    }
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}

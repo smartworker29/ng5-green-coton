@@ -1,0 +1,55 @@
+<div *ngIf="this.errors.length > 0" id='account-errors' class='alert alert-danger'>
+  <ul>
+    <li *ngFor="let error of this.errors">
+      {{error}}
+    </li>
+  </ul>
+</div>
+
+<div id="account-forms" class='row'>
+  <div id="account-login" class='col-md-6 col-sm-12'>
+    <h5>Login</h5>
+    <div class="form-group">
+      <label class="control-label">Email</label>
+      <input class='form-control' type="text" [(ngModel)]="loginEmail"/>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Password</label>
+      <input class='form-control' type="password" [(ngModel)]="loginPassword"/>
+    </div>
+    <button (click)="onLogin()" [disabled]="this.buttonsDisabled" type="button" class="pull-right btn btn-sm btn-secondary">
+      Login
+    </button>
+    <a (click)="onShowResetForm()" class='pull-left'>Forgot your password?</a>
+    <div id='account-reset' [hidden]="hideResetForm">
+      <div class="form-group">
+        <label class="control-label">Email</label>
+        <input class='form-control' type='text' [(ngModel)]="resetEmail" />
+      </div>
+      <button (click)="onForgotPassword()" [disabled]="this.buttonsDisabled" type="button" class="pull-right btn btn-sm btn-secondary" >Reset Password</button>
+    </div>
+  </div>
+
+  <div id="account-register" class='col-md-6 col-sm-12'>
+    <h5>Create an Account</h5>
+    <div class="form-group">
+      <label class="control-label">Email</label>
+      <input class='form-control' type="text" [(ngModel)]="registerEmail"/>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Password</label>
+      <input class='form-control' type="password" [(ngModel)]="registerPassword"/>
+    </div>
+    <div class="form-group">
+      <label class="control-label">Confirm Password</label>
+      <input class='form-control' type="password" [(ngModel)]="registerPasswordConfirm"/>
+    </div>
+    <div class="form-group">
+      <label class="control-label">First Name</label>
+      <input class='form-control' type="text" [(ngModel)]="registerFirstName"/>
+    </div>
+    <button (click)="onRegister()" [disabled]="this.buttonsDisabled" type="button" class="pull-right btn btn-sm btn-secondary">
+      Register
+    </button>
+  </div>
+</div>

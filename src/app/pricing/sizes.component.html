@@ -1,0 +1,52 @@
+<ng-template #content let-c="close" let-d="dismiss" class="sizes-modal">
+  <div class="modal-header">
+    <h4 class="modal-title">Quantities</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="sizes-table table table-striped">
+      <thead>
+        <tr>
+          <th colspan='2' style='text-align:center;'>Adult Sizes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let size of adultSizes">
+          <td align="center">{{size.size}}</td>
+          <td>
+            <app-ui-precision-range
+              [uom]=""
+              [conversionType]=""
+              [conversionFactor]="1"
+              [min]="0"
+              [max]="999"
+              [step]="1"
+              [value]="size.quantity"
+              (onChange)="onUpdateSize(size, $event)"
+            ></app-ui-precision-range>
+          </td>
+        </tr>
+        <tr>
+          <td colspan='2' align='center'>Youth Sizes</td>
+        </tr>
+        <tr *ngFor="let size of youthSizes">
+          <td align="center">{{size.size}}</td>
+          <td>
+            <app-ui-precision-range
+              [uom]=""
+              [conversionType]=""
+              [conversionFactor]="1"
+              [min]="0"
+              [max]="999"
+              [step]="1"
+              [value]="size.quantity"
+              (onChange)="onUpdateSize(size, $event)"
+            ></app-ui-precision-range>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

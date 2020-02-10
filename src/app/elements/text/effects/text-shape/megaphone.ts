@@ -1,0 +1,63 @@
+import { Observable } from 'rxjs/Observable';
+import { TextCanvas } from '../../canvas/text-canvas';
+import { TextShapeType } from './text-shape-type';
+import { TranslateMatrix } from '../../../../models/translate-matrix';
+
+export class Megaphone extends TextShapeType {
+  public name = 'megaphone';
+
+  protected createShape(): Observable<TextCanvas> {
+    return Observable.create((observer) => {
+      this.getPlainTextCanvas().subscribe(textCanvas => {
+        const canvas = textCanvas.canvas;
+        const distortAmount: number = (((this.adjust / 100 * 2)) - 1) / 2;
+
+        const bitmapWidth = canvas.width;
+        const bitmapHeight = canvas.height;
+        const bitmapHeightAdjusted =  bitmapHeight + (bitmapHeight * Math.abs(distortAmount));
+
+        const tmpCanvas: HTMLCanvasElement = <HTMLCanvasElement> document.createElement('canvas');
+        tmpCanvas.width = bitmapWidth;
+        tmpCanvas.height = bitmapHeight + (bitmapHeight * Math.abs(distortAmount * 1.5));
+        const context = tmpCanvas.getContext('2d');
+
+        const translateMatrix = new TranslateMatrix();
+        let drawLocX = 0;
+
+        while (drawLocX <= bitmapWidth) {
+          const distDec = -distortAmount;
+
+          // Draw the columns to the bitmap
+          translateMatrix.tx = drawLocX;
+
+          // Scale the y to create the slope
+          if (distDec >= 0) {
+            translateMatrix.d = (((drawLocX / (bitmapWidth / -distDec)) * 2) + 1 + distDec);
+          } else {
+            translateMatrix.d = ( (( (bitmapWidth - drawLocX) / (bitmapWidth / distDec) ) * 2) + 1 - distDec);
+          }
+
+          // Position the y so that the slope is at the top
+          translateMatrix.ty = bitmapHeightAdjusted * .5 - (bitmapHeight * translateMatrix.d * .5);
+
+          context.drawImage(canvas, drawLocX, 0, 1, canvas.height, drawLocX, translateMatrix.ty, 1, canvas.height * translateMatrix.d);
+
+          drawLocX ++;
+        }
+
+        // we may have increased Canvas size, so redrawing to fit element's original size
+        const scaledCanvas = document.createElement('canvas');
+        scaledCanvas.width = canvas.width;
+        scaledCanvas.height = canvas.height;
+        const scaledContext = scaledCanvas.getContext('2d');
+        scaledContext.drawImage(tmpCanvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+
+        textCanvas.canvas = scaledCanvas;
+        textCanvas.context = scaledContext;
+
+        observer.next(textCanvas);
+        observer.complete();
+      });
+    });
+  }
+}

@@ -1,0 +1,15 @@
+.card {
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+.selected-color-label {
+  padding-left: 1em;
+}
+
+.card-block{ padding: 5px; }
+
+::ng-deep .cursor-cross {
+  .selectable {
+    cursor: crosshair;
+  }
+}

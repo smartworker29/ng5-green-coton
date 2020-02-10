@@ -1,0 +1,76 @@
+<div *ngIf="multiple && selectedColors.length" (click)="openColorsEditor($event)">
+  <app-color-swatch
+    class="color-swatch"
+    *ngFor="let color of selectedColors"
+    [color]="color"
+    ></app-color-swatch>
+</div>
+
+<div *ngIf="multiple" (click)="openColorsEditor($event)">
+  <button type="button" class="btn btn-primary btn-sm">Choose Colors</button>
+</div>
+
+<div *ngIf="!multiple && !!selectedColor" (click)="openColorsEditor($event)">
+  <app-color-swatch class="color-swatch" [color]="selectedColor"></app-color-swatch>
+</div>
+
+<div *ngIf="!multiple && !selectedColor" (click)="openColorsEditor($event)">
+  <button type="button" class="btn btn-primary btn-sm">Choose Color</button>
+</div>
+
+<ng-template #colorsEditor let-c="close" let-d="dismiss" class="colors-dialog">
+  <div class="modal-header">
+    <h4 class="modal-title">Select Color(s)</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="_selectedColors.length" class="row selected-colors-container">
+      <div
+        class="col selected-colors-text"
+        *ngFor="let color of _selectedColors"
+        >
+        <app-color-swatch
+          [color]="color"
+        ></app-color-swatch>
+        {{color.name}}
+      </div>
+
+      <div *ngIf="multiple" class="col">
+        <p class="alert alert-danger" *ngIf="tooManyColors()">
+          You must limit your selection to {{maximumColors}} {{pluralizedColor(maximumColors)}}.
+        </p>
+        <p class="alert alert-danger" *ngIf="notEnoughColors()">
+          You must select at least {{minimumColors}} {{pluralizedColor(minimumColors)}}.
+        </p>
+        <button *ngIf="multiple && validColorCount()" type="button" class="btn btn-primary" (click)="onDone($event)">Done</button>
+      </div>
+    </div>
+    <div class="modal-body color-swatch-background">
+      <div class="row color-swatch-wrapper">
+        <app-color-swatch
+          *ngFor="let color of availableColors"
+          [color]="color"
+          [ngClass]="{'color-swatch-container': true, 'active': isActive(color)}"
+          [active]="isActive(color)"
+          (click)="onSelectedColor(color, $event)"
+          ></app-color-swatch>
+      </div>
+      <div *ngIf="allowGarmentColor" class="row color-swatch-wrapper">
+        <label class="col-12 use-garment-color">
+          <input type="checkbox" (click)="onSelectedColor(garmentColor, $event)" />
+          Use Garment Color
+        </label>
+      </div>
+    </div>
+    <div *ngIf="!multiple" class="row">
+      <div class="col">
+        <button *ngIf="validColorCount()" type="button" class="btn btn-primary btn-sm pull-right btn-done"
+          (click)="onDone($event)">
+          Apply Color
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

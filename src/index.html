@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+  crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SavageDesigner</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    window.TransformStream = undefined;
+    window.WritableStream = undefined;
+    window.ReadableStream = undefined;
+  </script>
+</head>
+<body>
+  <!--
+    Explanation of Parameters
+    * you can pass designId="ABC...123...XYZ" to have the designer open up a specific design by default
+    * or you can pass cartItemId="584073" to have the designer open up a specific design from the cart by default
+    * To export a design from the admin, the designer should be instantiated with the following attributes...
+      * exportMode="true" to have the designer open up in export mode
+      * spoofSession="304/4803" (for example) to have the designer authenticate as another user
+      * orderId="12345" (for example) to indicate which order the design belongs to
+      * itemId="98765" (for example) to indicate which item in the order the design belongs to
+    * To load a shared design, pass sharedDesignId="2211635"
+    * productId="624" (for example) to indicate which product to load
+    * colorId="xyz" to load a specific color on startup
+  -->
+  <app-root exportMode="true"></app-root>
+</body>
+</html>

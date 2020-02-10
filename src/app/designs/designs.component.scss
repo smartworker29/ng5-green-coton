@@ -1,0 +1,9 @@
+.designs-table {
+  width: 100%;
+}
+.designs-table tr { border-bottom: 1px solid #ddd;}
+.designs-table tr:last-child { border: none;}
+.designs-table td { padding: 5px 0;}
+#designs-wrapper{ height: 550px; overflow: auto;}
+.design-compatiblity-warning{ font-size: 12px; color: red; margin-bottom: 5px; }
+ /deep/ .designs-preview{ width: 75px; display: block; float: left; margin-right: 10px;}

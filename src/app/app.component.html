@@ -1,0 +1,42 @@
+<app-ui-alerts></app-ui-alerts>
+<div class="header">
+  <app-zoom></app-zoom>
+  <app-design
+    [designId]="designId"
+    [cartItemId]="cartItemId"
+    [exportMode]="exportMode"
+    [spoofSession]="spoofSession"
+    [orderId]="orderId"
+    [itemId]="itemId"
+    [sharedDesignId]="sharedDesignId"
+    [productId]="productId"
+    [colorId]="colorId"
+    ></app-design>
+</div>
+
+<div class="svg-wrapper container" id="container">
+  <div id="subcontainer" style="display: inline-block; position: relative; -webkit-user-select: none;">
+    <canvas height="80" width="60" style="display: block; height: 100%; visibility: hidden;"></canvas>
+    <svg id="canvas" style="left: 0px; top: 0px; position: absolute;"></svg>
+  </div>
+  <!-- <svg id="canvas"></svg> -->
+</div>
+
+<div id="dialog-bar">
+  <div id="dialog-block-1"></div>
+  <div id="dialog-block-2"></div>
+</div>
+
+<a *ngIf="!previewMode()" class='legacy-link btn btn-sm btn-secondary d-none d-lg-block' href='https://retired.bluecotton.com/studio.html'>Take me to the legacy Design Studio</a>
+
+<div class="toolbar" *ngIf="currentDesign">
+  <app-text-element *ngIf="!previewMode()" class="toolbar-item"></app-text-element>
+  <app-clipart *ngIf="!previewMode()" class="toolbar-item"></app-clipart>
+  <app-shape-element *ngIf="!previewMode()" class="toolbar-item"></app-shape-element>
+  <app-image-upload *ngIf="!previewMode()" class="toolbar-item"></app-image-upload>
+  <app-distress *ngIf="!previewMode()" class="toolbar-item"></app-distress>
+  <app-names-and-numbers class="toolbar-item" *ngIf="designHasBack()"></app-names-and-numbers>
+  <app-layers *ngIf="!previewMode()" class="toolbar-item"></app-layers>
+  <app-designs *ngIf="!previewMode()" class="toolbar-item"></app-designs>
+</div>
+

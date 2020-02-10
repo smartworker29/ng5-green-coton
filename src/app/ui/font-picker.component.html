@@ -1,0 +1,32 @@
+<button class="btn btn-outline-secondary dropdown-toggle btn-open-font-picker" (click)="openFontPicker()">
+  {{ font.family || "Choose a font..." }}
+</button>
+<ng-template #fontPicker let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Choose a Font</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="categories-container" *ngIf="categories$ | async; let categories">
+      <select *ngIf="categories.length > 1" (change)="loadFonts($event.target.value)" class="form-control">
+        <option *ngFor="let category of categories"
+          class="dropdown-item"
+          [selected]="category === selectedCategory"
+          >
+          {{ category }}
+        </option>
+      </select>
+    </div>
+    <div class="fonts-container" #fontsContainer (scroll)="onScroll($event)">
+      <button *ngFor="let font of fonts$ | async"
+        class="dropdown-item"
+        (click)="selectFont(font, $event)"
+        >
+        <span class="sample" [style.fontFamily]="font.family">{{text}}</span>
+        <span class="pull-right text-muted">{{ font.family }}</span>
+      </button>
+    </div>
+  </div>
+</ng-template>

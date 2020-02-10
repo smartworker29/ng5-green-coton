@@ -1,0 +1,97 @@
+<div class="toolbar-item" (click)="switchToBack()">
+  <i class="fa fa-users toolbar-item-icon"></i>
+  <label class="toolbar-item-title">
+    Names &amp; Numbers
+  </label>
+</div>
+<app-sizes></app-sizes>
+<ng-template #editor let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Edit Names & Numbers</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="!currentDesign.selectedSizes.length">
+      Please <a href='#' (click)="openQuantities($event)">add quantities</a> before entering names and numbers.
+      <hr/>
+    </div>
+    <div *ngIf="currentElement && currentDesign.selectedSizes.length">
+      <div class="row names-row">
+        <label class="col-3 col-sm-12">Names</label>
+        <app-ui-font-picker
+          class="col-6 col-sm-9"
+          [text]="currentElement.nameText"
+          [font]="currentElement.nameFont"
+          (fontChange)="onChanges('nameFont', $event)"
+          fontFeatures="names_and_numbers"
+          >
+        </app-ui-font-picker>
+        <app-color-picker
+          class="form-control-static col-3"
+          [selectedColor]="currentElement.nameFill"
+          [availableColors]="availableColors"
+          [allowGarmentColor]="false"
+          (selectColor)="onChanges('nameFill', $event)"
+        ></app-color-picker>
+      </div>
+      <div class="row numbers-row">
+        <label class="col-3 col-sm-12">Numbers</label>
+        <app-ui-font-picker
+          class="col-6 col-sm-9"
+          [text]="currentElement.numberText"
+          [font]="currentElement.numberFont"
+          (fontChange)="onChanges('numberFont', $event)"
+          fontFeatures="names_and_numbers"
+          >
+        </app-ui-font-picker>
+        <app-color-picker
+          class="form-control-static col-3"
+          [selectedColor]="currentElement.numberFill"
+          [availableColors]="availableColors"
+          [allowGarmentColor]="false"
+          (selectColor)="onChanges('numberFill', $event)"
+        ></app-color-picker>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Size</th>
+                <th>Name</th>
+                <th>#</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let nameAndNumber of namesAndNumbers; let i = index">
+                <td class="size-cell">{{nameAndNumber.size}}</td>
+                <td class="name-cell">
+                  <input type="text" [attr.maxlength]="maxLengthName" class="form-control"
+                    (focus)="updateNameAndNumber(i)"
+                    (keyup)="updateName(i, $event)"
+                    [value]="nameAndNumber.name"
+                  />
+                </td>
+                <td class="number-cell">
+                  <input type="text" [attr.maxlength]="maxLengthNumber" class="form-control"
+                    (focus)="updateNameAndNumber(i)"
+                    (keyup)="updateNumber(i, $event)"
+                    [value]="nameAndNumber.number"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger btn-sm" (click)="remove()">
+      <i class="fa fa-trash"></i>
+      Remove
+    </button>
+  </div>
+</ng-template>

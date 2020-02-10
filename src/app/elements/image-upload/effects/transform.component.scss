@@ -1,0 +1,19 @@
+@import '~bootstrap/scss/functions',
+        '~bootstrap/scss/variables',
+        '~bootstrap/scss/mixins';
+
+.precision-col {
+  @include make-col-ready();
+  @include make-col(6);
+  @media (min-width: 600px) {
+    @include make-col(12);
+  }
+  @media (min-width: 1200px) {
+    @include make-col(6);
+  }
+  @media(max-width: 500px){
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+}

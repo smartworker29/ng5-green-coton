@@ -1,0 +1,64 @@
+<div *ngIf="currentDesign" class="quick-bar-icon" (click)="showQuickBar()">
+  <div [inlineSVG]="'assets/icons/shirt.svg'" id='my-design-icon' class="toolbar-item-icon"></div>
+  <label class="toolbar-item-title">
+    My Design
+  </label>
+</div>
+<div *ngIf="currentDesign" class='quick-bar' #quickBarContent>
+  <button type="button" class="close" aria-label="Close" (click)="hideQuickBar()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <app-pricing class="text-center"></app-pricing>
+
+  <div *ngIf="currentDesign.product" class='product-name row'>
+    <div class="col-4 text-right">Item</div>
+    <div class="col-8"><a href='#' (click)="openProducts($event)">{{currentDesign.product.name}}</a></div>
+  </div>
+  <div *ngIf="currentDesign.product" class='product-color row'>
+    <div class="col-4 text-right">Color</div>
+    <div class="col-8">
+      <div *ngIf="color">
+        <app-color-picker
+          class="color-picker selected-color"
+          [selectedColor]="color"
+          [availableColors]="availableColors"
+          [allowGarmentColor]="false"
+          (selectColor)="onSelectColor($event)"
+        ></app-color-picker>
+        <small class="selected-color-label">{{color.name}}</small>
+      </div>
+    </div>
+  </div>
+  <div class="quantities row">
+    <div class="col-4 text-right">Qtys</div>
+    <div class="col-8">
+      <div *ngIf="!currentDesign.selectedSizes.length">
+        <a href='#' (click)="openQuantities($event)">Add</a>
+      </div>
+      <div *ngIf="currentDesign.selectedSizes.length">
+        <span *ngFor="let size of currentDesign.selectedSizes" class="badge badge-primary size-badge">
+          {{size.size}}-{{size.quantity}}
+        </span>
+        <a href='#' (click)="openQuantities($event)">Edit</a>
+      </div>
+    </div>
+  </div>
+  <div class="sleeve-print-availability row" *ngIf="currentDesign.hasSleeves && currentDesign.totalQuantity < 6">
+    <div class="col-12">
+      <p class="small">
+        Sleeve print available with 6+
+      </p>
+    </div>
+  </div>
+
+  <div class="row" id='quick-menu-controls'>
+    <app-design-add-to-cart [currentDesign]="currentDesign" class="col ie-edge-w"></app-design-add-to-cart>
+    <app-design-save *ngIf="!globalService.preview" [currentDesign]="currentDesign" class="col ie-edge-w"></app-design-save>
+    <app-design-share *ngIf="!globalService.preview" [currentDesign]="currentDesign" class="col ie-edge-w" [sharedDesignId]="sharedDesignId"></app-design-share>
+    <app-design-export [currentDesign]="currentDesign" class="col ie-edge-w" *ngIf="exportMode"></app-design-export>
+  </div>
+</div>
+
+<app-products (select)="onSelectProduct($event)" (cancel)="onCancelBrowsingProducts()"></app-products>
+<app-sizes></app-sizes>

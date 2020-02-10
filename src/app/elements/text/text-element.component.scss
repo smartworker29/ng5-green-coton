@@ -1,0 +1,19 @@
+@import '~bootstrap/scss/functions',
+        '~bootstrap/scss/variables',
+        '~bootstrap/scss/mixins';
+
+.text-element-modal .modal-dialog {
+  /*max-width: 600px;*/
+}
+
+.font-container {
+  @include make-col(9);
+}
+
+.color-container {
+  @include make-col(3);
+}
+
+hr {
+  margin-top: 0;
+}

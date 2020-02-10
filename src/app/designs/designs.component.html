@@ -1,0 +1,65 @@
+<div class="toolbar-item" (click)="openDialog(content)">
+  <i class="fa fa-book toolbar-item-icon"></i>
+  <label class="toolbar-item-title">
+    My Designs
+  </label>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">My Designs</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="!isLoggedIn()" class="modal-body" style="text-align:center">
+      <app-account (accountEvent)="accountEventsHandler($event)"></app-account>
+    </div>
+    <div *ngIf="isLoggedIn()" id="designs-wrapper">
+      <table class="designs-table">
+        <tbody>
+          <tr *ngFor="let design of designs">
+            <td [attr.colspan]="design.compatible ? 1 : 3">
+              <div *ngIf="design.editing">
+                <input type="text" id="name-{{design.id}}" class="form-control"
+                  (keyup.enter)="onSaveName(design)"
+                  (keyup.esc)="design.editing=false;"
+                  [value]="design.name"
+                />
+              </div>
+              <div *ngIf="!design.editing">
+                <img *ngIf="!design.editing" class='designs-preview' src="{{design.previewImageUrl}}" />
+                <br /><a href="#" (click)="onLoad(design, $event)">{{design.name}}</a><br />
+                <span *ngIf="!design.compatible" class='design-compatiblity-warning'>This design is not yet compatible with our new designer.</span>
+              </div>
+            </td>
+            <td *ngIf="design.compatible" align="center">
+              <div *ngIf="design.editing">
+                <button
+                type="button"
+                class="col-xs-2 btn btn-link btn-sm"
+                (click)="design.editing=false;"
+                >Cancel</button>
+              </div>
+              <div *ngIf="!design.editing && design.compatible">
+                <button type="button" class="btn btn-sm btn-link" (click)="onEdit(design)"><i class="fa fa-edit"></i></button>
+              </div>
+            </td>
+            <td *ngIf="design.compatible" align="center">
+              <div *ngIf="design.editing && design.compatible">
+                <button
+                type="button"
+                class="col-xs-2 btn btn-primary btn-sm"
+                (click)="onSaveName(design)"
+                >Save</button>
+              </div>
+              <div *ngIf="!design.editing && design.compatible">
+                <button type="button" class="btn btn-sm btn-link" (click)="onRemove(design, $event)"><i class="fa fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,54 @@
+<div class="toolbar-item" (click)="showDialog()">
+  <div class="toolbar-item-icon" [inlineSVG]="'assets/icons/layers.svg'"></div>
+  <label class="toolbar-item-title">
+    Layers
+  </label>
+</div>
+<ng-template #layerEditor>
+  <div class="modal-header">
+    <h4 class="modal-title">Layers</h4>
+    <button type="button" class="close" aria-label="Close" (click)="hideDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="!layers.length">
+      There are currently no layers on this side.
+    </div>
+    <div *ngIf="layers.length">
+      <table class="layers-table">
+        <tbody>
+          <tr *ngFor="let layer of layers; let i = index;">
+            <td [innerHtml]="layer.icon"></td>
+            <td><a (click)="selectLayer(layer, $event)" href="#">{{layer.description}}</a></td>
+            <td align="center">
+              <span *ngIf="layers.length > 1 && i != 0 && layers[i - 1].elementReference.className !== 'NamesAndNumbersElement'">
+                <a (click)="moveUp(layer, $event)" href="#"><i class="fa fa-arrow-up"></i></a>
+              </span>
+            </td>
+            <td align="center">
+              <span *ngIf="layers.length > 1 && i != layers.length - 1 && layer.elementReference.className !== 'NamesAndNumbersElement'">
+                <a (click)="moveDown(layer, $event)" href="#"><i class="fa fa-arrow-down"></i></a>
+              </span>
+            </td>
+            <td align="center"><a (click)="removeLayer(layer, $event)" href="#"><i class="fa fa-trash"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="uniqColors().length" class="panel panel-default">
+      <div class="panel-heading">
+        <br>
+        <h6 class="panel-title">Colors Used</h6>
+      </div>
+      <div class="panel-body">
+        <ul class="list-inline">
+          <li *ngFor="let color of uniqColors()">
+            <app-color-swatch [color]="color"></app-color-swatch>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-template>

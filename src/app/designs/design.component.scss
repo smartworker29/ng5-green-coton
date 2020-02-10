@@ -1,0 +1,73 @@
+$quick-bar-breakpoint: 890px;
+
+.quick-bar {
+  position: absolute;
+  z-index: 1000;
+  max-width: 40%;
+  top: 0px;
+  right: 0;
+  padding: 10px 20px 5px 10px;
+  background: #fff;
+  border-radius: 0 0 0 10px;
+  .close {
+    display: none;
+  }
+
+  @media (max-width: $quick-bar-breakpoint) {
+    display: none;
+    width: 100%;
+    border-bottom: 1px solid #e3e7eb;
+
+    &.show {
+      display: block;
+      max-width: 100%;
+    }
+    .close {
+      display: block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  }
+}
+
+
+.quick-bar-icon {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  padding: 8px 8px 5px 10px;
+  display: none;
+  @media (max-width: $quick-bar-breakpoint) {
+    display: block;
+  }
+  .toolbar-item-title {
+    display: none;
+  }
+}
+
+.btn {
+  padding: 0.5rem 0.5rem .4rem;
+}
+.product-name, .product-color, .quantities {
+  font-size: 12px;
+}
+
+.selected-color-label {
+  padding-left: 2em;
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) { /* IE10+ CSS styles */
+  .ie-edge-w {
+    min-width: 118px;
+  }
+}
+
+@supports (-ms-ime-align:auto) { /* Microsoft Edge CSS styles */
+  .ie-edge-w {
+    min-width: 118px;
+  }
+}
+#quick-menu-controls .col { padding: 0px 5px; }
+.sleeve-print-availability p{text-align: right;}

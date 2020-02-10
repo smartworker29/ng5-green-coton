@@ -1,0 +1,29 @@
+.selected-colors-container {
+}
+
+.selected-colors-text {
+  line-height: 30px;
+  vertical-align: middle;
+}
+
+.modal-body.color-swatch-background {
+  background: rgb(244, 246, 250);
+  margin: 0 -15px;
+}
+
+.color-swatch-wrapper {
+  margin: 0 auto;
+}
+
+.color-swatch-container.active {
+  border: blue;
+}
+
+.use-garment-color {
+  margin: 7px;
+  text-align: center;
+}
+
+.btn-done {
+  margin-top: 15px;
+}

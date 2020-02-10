@@ -1,0 +1,140 @@
+<ng-template #clipartBrowser let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Clipart Browser</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style='margin-bottom: -15px;'>
+    <div class="row" style="margin-bottom: -25px;">
+      <div class="col-md-6 clipart-breadcrumb">
+        <i class="home fa fa-home" (click)="clearCategory()"></i>
+        <span *ngIf="category" class="category" (click)="getCliparts(category, $event, 1)">/ {{category.title}}</span>
+        <span *ngIf="!category">&nbsp;</span>
+        <span *ngIf="subcategory"> / {{subcategory.title}}</span>
+      </div>
+      <div class="col-md-6">
+        <div class="pull-right input-group" style='width: 80%; margin-top: -9px;'>
+          <input type="search" [(ngModel)]="searchString" (keyup.enter)="search(1, $event)" placeholder="Search clipart" class="form-control" />
+          <span class="input-group-btn">
+            <button class="btn btn-default search-button" type="button" (click)="search(1, $event)">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+        <div style='float: left; height: 65px; width: 65px; position: relative; top: -20px;'>
+          <img src={{greekIcon()}} *ngIf="this.greek" class="img-fluid" style='width: 65px;' />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-sm-6 category-dropdown">
+        <div ngbDropdown>
+          <button
+            class="btn btn-secondary btn-block"
+            ngbDropdownToggle
+            >
+            {{ category && category.title || 'Choose a category...' }}
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button *ngFor="let c of categories"
+              class="dropdown-item"
+              (click)="getCliparts(c, $event, 1)"
+              >
+              {{ c.title }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 category-dropdown">
+        <div *ngIf="category" ngbDropdown>
+          <button class="btn btn-secondary btn-block" ngbDropdownToggle>
+            {{ (subcategory && subcategory.title) || "Popular" }}
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button *ngFor="let s of category.subcategories"
+              class="dropdown-item"
+              (click)="getCliparts(s, $event, 1)"
+              >
+              {{ s.title }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="background-color: rgb(244,248, 251); padding-top: 1em;">
+      <div class="col-md-12" *ngIf="searchError" class="alert alert-danger">{{searchError}}</div>
+      <div class="col-md-4 col-sm-4">
+        <div class="form-group" id="category-group" style="overflow-y: auto; overflow-x: hidden; height: 550px;">
+          <ul class="list-unstyled">
+            <li *ngFor="let c of this.categories"
+              (click)="getCliparts(c, $event, 1)"
+              [ngClass]="{selected: categoryIsSelected(c)}"
+              >{{c.title}}
+              <ul *ngIf="categoryIsSelected(c) && c.subcategories.length">
+                <li *ngFor="let s of c.subcategories"
+                  (click)="getCliparts(s, $event, 1); $event.stopPropagation();"
+                  [ngClass]="{selected: categoryIsSelected(s)}">
+                  {{s.title}}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8 col-sm-8 clipart-results">
+        <div class="row">
+          <div *ngIf="loading" class="col-12">
+            <app-ui-loading></app-ui-loading>
+          </div>
+          <p *ngIf="!loading && !cliparts.length && (this.category || this.searchString)">
+            There are no results.
+          </p>
+          <ng-template [ngIf]="!loading && cliparts.length">
+            <div *ngFor="let clipart of cliparts"
+              class="clipart-result col-4 col-lg-3"
+              (click)="new(clipart)"
+              >
+              <div class="clipart-image-wrapper">
+                <img
+                  src="{{clipart.imageUrl}}"
+                  class="clipart-image img-fluid align-self-center"
+                  ngbTooltip="{{clipart.title}}"
+                  />
+                <span class='clipart-id'>{{clipart.externalId}}</span>
+              </div>
+            </div>
+            <div *ngIf="searchString" class="col-12">
+              <button
+                *ngIf="page > 1"
+                type="button"
+                class="btn btn-primary pull-left"
+                (click)="search(page - 1, $event)"
+                >Prev</button>
+              <button
+                *ngIf="cliparts.length == clipartService.limit"
+                type="button"
+                class="btn btn-primary pull-right"
+                (click)="search(page + 1, $event)"
+                >Next</button>
+            </div>
+            <div *ngIf="!searchString" class="col-12">
+              <button
+                *ngIf="page > 1"
+                type="button"
+                class="btn btn-primary pull-left"
+                (click)="getCliparts(this.subcategory || this.category, $event, page - 1)"
+                >Prev</button>
+              <button
+                *ngIf="cliparts.length == clipartService.limit"
+                type="button"
+                class="btn btn-primary pull-right"
+                (click)="getCliparts(this.subcategory || this.category, $event, page + 1)"
+                >Next</button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

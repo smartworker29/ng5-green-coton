@@ -1,0 +1,160 @@
+$quick-bar-breakpoint: 890px;
+
+html, body { height: 100%; }
+
+.header {
+  width: 100%;
+  z-index: 1100;
+  position: relative;
+}
+
+  app-zoom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+.svg-wrapper {
+  position: relative;
+  overflow: hidden; /* important so that when we zoom in on svg, doesn't increase page width */
+  @media(max-width: 600px) {
+    margin-top: 70px;
+  }
+}
+
+  #canvas {
+    overflow: visible;
+  }
+
+#dialog-bar {
+  position: absolute;
+  right: -10px;
+  top: 190px;
+  display: block;
+  width: 20%;
+  z-index: 1000;
+  @media (max-width: $quick-bar-breakpoint) {
+    top: 30px;
+  }
+  @media (max-width: 600px) {
+    width: 95%;
+  }
+}
+
+  /deep/ #dialog-bar .modal-dialog {
+    margin: 10px 20px 10px auto;
+    padding-left: 10px;
+  }
+
+/deep/ .btn-group .btn {
+  font-size: 13px;
+  padding: .5rem .5rem .4rem;
+}
+
+/deep/ .modal {
+  top: 35px;
+  z-index: 2000; /* make sure dialogs are above any other elements */
+  @media (max-width: 600px) {
+    top: 50px;
+  }
+}
+  /deep/ .modal.block-1 { position: relative; }
+  /deep/ .modal.block-2 { position: relative; }
+  /deep/ .modal-open { overflow: auto !important; }
+  @media (max-width: 600px) {
+    /deep/ .modal-open .modal {
+      margin-bottom: 100px; /* make sure the bottom of the dialog can be seen above the toolbar */
+    }
+  }
+  /deep/ .modal.permanent .close { display: none !important;}
+  @media (max-width: 600px) {
+    /deep/ .modal.permanent { display: none !important; }
+    /deep/ .modal.permanent.show-anyway { display: block !important; }
+    /deep/ .modal.permanent.show .close { display: block !important;}
+  }
+
+/deep/ .dialog-shape-picker .modal-dialog {
+  max-width: 400px;
+}
+
+.legacy-link {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  z-index: 1290;
+  &:hover {
+    color: #fff;
+    background-color: #727b84;
+    border-color: #6c757d;
+  }
+}
+
+.toolbar {
+  position: absolute;
+  left: 0;
+  top: 50px;
+  display: block;
+  background-color: #f4f7fa;
+  color: #636363;
+  padding: 1em;
+  border-radius: 10px;
+  border: 1px solid #e3e7eb;
+  max-width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 100;
+  @media (max-width: 600px) {
+    position: fixed;
+    display: flex;
+    padding: 0.2em 0.5em 1em;
+    top: unset;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    max-width: 100%;
+  }
+}
+
+  /deep/ .toolbar-item {
+    flex-grow: 1;
+    cursor: pointer;
+    margin-left: auto; margin-right: auto;
+    z-index: 100;
+    padding: 10px 0 0;
+  }
+
+    /deep/ .toolbar-item-title {
+      padding-top: 2px;
+      font-size: 9px;
+      text-align: center;
+      cursor: pointer;
+      display: block;;
+      color: #636363;
+      @media (max-width: 600px) {
+        display: none !important;
+      }
+    }
+
+    /deep/ .toolbar-item-icon, /deep/ .toolbar-item-icon svg {
+      display: block;
+      width: 32px;
+      height: 32px;
+      font-size: 2em; /* for font-based icons */
+      color: #096ba1;
+      margin-left: auto; margin-right: auto;
+    }
+    /deep/ .toolbar .toolbar-item-icon path {
+      fill: #096ba1;
+    }
+    /deep/ #my-design-icon {
+      height: 62px;
+      width: 62px;
+      top: -25px;
+      position: relative;
+    }
+    /deep/ #my-design-icon svg {
+      height: 62px;
+      width: 62px;
+    }
