@@ -72,7 +72,8 @@ export class ClipartElement extends Element {
 
       const self = this;
       this.convertClipartToImage().subscribe((canvas) => {
-        const croppedCanvas = this.cropImage(canvas);
+        const haveToCropp = (this.heightScale > 1) || (this.widthScale > 1);
+        const croppedCanvas = haveToCropp ? this.cropImage(canvas) : canvas;
         self.imageElement.loaded((loader) => {
           const width = loader.width / CANVAS_SCALE;
           const height = loader.height / CANVAS_SCALE;
@@ -267,7 +268,7 @@ export class ClipartElement extends Element {
         this.originalHeight = clipartBox.h;
       }
 
-      this.imageElement = this.svgElement.image().attr('preserveAspectRatio', 'none');
+      this.imageElement = this.svgElement.image().attr('preserveAspectRatio', 'xMidYMid meet');
 
       this.addBehaviors();
     }
