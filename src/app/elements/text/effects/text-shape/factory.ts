@@ -6,13 +6,14 @@ import { Plain } from './plain';
 import { Railroad } from './railroad';
 import { Starwars } from './starwars';
 import { TopSlope } from './top-slope';
+import { Arch } from './arch';
 
 import { TextShapeType } from './text-shape-type';
 
 export class TextShapeFactory {
 
   public static shapeNames(): string[] {
-    return ['hill', 'megaphone', 'railroad', 'bulge', 'starwars', 'topslope', 'bottomslope'];
+    return ['arch', 'hill', 'megaphone', 'railroad', 'bulge', 'starwars', 'topslope', 'bottomslope'];
   }
 
   public static build(name: string): TextShapeType {
@@ -31,6 +32,8 @@ export class TextShapeFactory {
         return new Starwars();
       case 'topslope':
         return new TopSlope();
+      case 'arch':
+        return new Arch();
       default:
         return new Plain();
     }
