@@ -1,77 +1,109 @@
-import { Observable } from 'rxjs/Observable';
-import { TextCanvas } from '../../canvas/text-canvas';
-import { TextShapeType } from './text-shape-type';
-import { TranslateMatrix } from '../../../../models/translate-matrix';
+import { Component, Input } from '@angular/core';
+import { EffectComponent} from '../../effect.component';
+import { TextElement } from '../text-element';
+import { TextElementComponent } from '../text-element.component';
+import { TextShape } from './text-shape';
 
-export class Arch extends TextShapeType {
-  public name = 'arch';
+@Component({
+  selector: 'app-text-shape',
+  styles: [`
+    :host {
+      width: 100%;
+      margin-bottom: 1em;
+    }
 
-  protected createShape(): Observable<TextCanvas> {
-    return Observable.create((observer) => {
-      this.getPlainTextCanvas().subscribe((textCanvas) => {
-        const canvas = textCanvas.canvas;
-        const distortAmount: number = ((this.adjust / 100 * 2)) - 1;
+    .effect-controls {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  `],
+  template: `
+    <div>
+      <label class="col-sm-12">
+        <input type="checkbox"
+          [checked]="enabled"
+          (change)="onEnabledChange($event)"
+          class="pull-right"
+          />
+        Text Shape
+      </label>
+      <ng-template [ngIf]="enabled">
+        <div class="row effect-controls">
+          <div class="col-12">
+            <label>Shape</label>
+            <select [ngModel]="element.shapeName" (ngModelChange)="onEffectChanges('shapeType', $event)">
+              <option *ngFor="let shape of effect.shapes" [ngValue]="shape">{{shape}}</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label>Shape Adjust:</label> <span #adjustValue>{{adjustDisplay()}}%</span>
+            <input type="range" min="-50" max="150" step="5"
+              [ngModel]="element.shapeAdjust"
+              (ngModelChange)="onEffectChanges('shapeAdjust', $event)"
+              />
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  `,
+})
+export class TextShapeComponent extends EffectComponent {
+  @Input() element: TextElement;
+  public effect: TextShape;
+  public enabled = false;
+  elementComponent: TextElementComponent;
 
-        const bitmapWidth = canvas.width;
-        const bitmapHeight = canvas.height;
-        const bitmapHeightAdjusted =  bitmapHeight + (bitmapHeight * Math.abs(distortAmount));
+  constructor(elementComponent: TextElementComponent) {
+    super(elementComponent);
+  }
 
-        const tmpCanvas: HTMLCanvasElement = <HTMLCanvasElement> document.createElement('canvas');
-        tmpCanvas.width = bitmapWidth;
-        tmpCanvas.height = bitmapHeight + (bitmapHeight * Math.abs(distortAmount * 1.5));
-        const context = tmpCanvas.getContext('2d');
+  additionalOnInit() {
+    if (this.element) {
+      this.enabled = this.element.shapeName !== 'plain';
+    }
+  }
 
-        const translateMatrix = new TranslateMatrix();
-        let drawLocX = 0;
+  adjustDisplay(): string {
+    const displayAmount = this.element.shapeAdjust - 50;
+    if (displayAmount > 0) {
+      return '+' + displayAmount;
+    }
+    return displayAmount.toString();
+  }
 
-        while (drawLocX <= bitmapWidth) {
-          let distDec = distortAmount;
-          translateMatrix.ty = drawLocX;
-          const curveX = drawLocX - (bitmapWidth * .5);
-          const sWidth = bitmapWidth * 1.5;
-          const sHeight = distDec * 6;
+  onEnabledChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.enabled = target.checked;
+    console.log(this.effect.shapes);
+    if (this.enabled) {
+      this.element.shapeName = this.effect.shapes[0];
+      this.element.shapeAdjust = 75;
+    } else {
+      this.element.shapeName = 'plain';
+    }
+    this.element.render().subscribe();
+  }
 
-          if (distortAmount <= 0) {
-            distDec = -distortAmount;
-            // Position the y to create the slope
-            translateMatrix.ty = bitmapHeightAdjusted - (
-                                  bitmapHeight * (
-                                    1 + (distDec * 5.5) - Math.sqrt(
-                                      (-(sHeight * sHeight) / ((sWidth * .5) * (sWidth * .5)) * curveX * curveX) + (sHeight * sHeight)
-                                    )
-                                  )
-                                );
-          } else {
-            // Position the y to create the slope
-            translateMatrix.ty = (
-              bitmapHeight * (
-                (distDec * 6)
-                - Math.sqrt(
-                  (-(sHeight * sHeight) / ((sWidth * .5) * (sWidth * .5)) * curveX * curveX) + (sHeight * sHeight)
-                )
-              )
-            );
-          }
-          context.drawImage(canvas, drawLocX,
-                            0, 1, canvas.height, drawLocX,
-                            translateMatrix.ty, 1, canvas.height);
-          drawLocX++;
-        }
-        textCanvas.canvas = tmpCanvas;
+  // overriding because we're manipulating element properties directly
+  onEffectChanges(property: string, value: any) {
+    switch (property) {
+      case 'shapeType': {
+        this.element.shapeName = value;
+        break;
+      }
+      case 'shapeAdjust': {
+        this.element.shapeAdjust = value;
+        break;
+      }
+    }
+    this.element.render().subscribe();
+  }
 
-        // we may have increased Canvas size, so redrawing to fit element's original size
-        const scaledCanvas = document.createElement('canvas');
-        scaledCanvas.width = canvas.width;
-        scaledCanvas.height = canvas.height;
-        const scaledContext = scaledCanvas.getContext('2d');
-        scaledContext.drawImage(tmpCanvas, 0, 0, scaledCanvas.width, scaledCanvas.height);
+  protected newEffect(): TextShape {
+    return new TextShape();
+  }
 
-        textCanvas.canvas = scaledCanvas;
-        textCanvas.context = scaledContext;
-
-        observer.next(textCanvas);
-        observer.complete();
-      });
-    });
+  protected effectClass(): string {
+    return 'TextShape';
   }
 }
