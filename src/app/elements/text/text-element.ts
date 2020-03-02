@@ -140,7 +140,6 @@ export class TextElement extends Element {
 
   private _render(): Observable<void> {
     return Observable.create((observer) => {
-
       if (this.fill.id === 'GARMENT_COLOR') {
         this.fill.rgb = this.area.design.productColor.swatch();
       }

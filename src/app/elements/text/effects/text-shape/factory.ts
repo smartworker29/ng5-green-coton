@@ -13,7 +13,7 @@ import { TextShapeType } from './text-shape-type';
 export class TextShapeFactory {
 
   public static shapeNames(): string[] {
-    return ['arch', 'hill', 'megaphone', 'railroad', 'bulge', 'starwars', 'topslope', 'bottomslope'];
+    return ['hill', 'megaphone', 'railroad', 'bulge', 'starwars', 'topslope', 'bottomslope', 'arch'];
   }
 
   public static build(name: string): TextShapeType {
